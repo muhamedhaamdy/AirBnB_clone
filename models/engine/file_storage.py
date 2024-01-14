@@ -1,22 +1,36 @@
 #!/usr/bin/python3
+"""This module defines a storage system for objects in a JSON file."""
 import json
 from models.base_model import BaseModel
+from models.user import User
+from models.state import State
+from models.city import City
+from models.amenity import Amenity
+from models.place import Place
+from models.review import Review
+
 
 class FileStorage:
+    """
+    Define the storage class.
+    """
+
     __file_path = "file.json"
     __objects = {}
 
     def all(self):
+        """
+        Returns a dictionary of objects in storage.
+        """
         return self.__objects
 
     def new(self, obj):
-        key = obj.__class__.__name__ + "." + obj.id
-        self.__objects[key] = obj
-    
-    def save(self):
-        with open(self.__file_path, 'w') as f:
-            serialized_objects = {k: v.to_dict() for k, v in self.__objects.items()}
-            f.write(json.dumps(serialized_objects))
+        """
+        Adds a new object to storage.
+        """
+        self.__objects[
+            "{}.{}".format(obj.__class__.__name__, obj.id)
+            ] = obj
 
     def reload(self):
         """
@@ -29,3 +43,18 @@ class FileStorage:
                     self.new(eval(val["__class__"])(**val))
         except FileNotFoundError:
             pass
+
+    def save(self):
+        """
+        Saves the storage dictionary to a JSON file.
+        """
+        with open(self.__file_path, "w") as f:
+            json.dump(
+                {
+                    k: v.to_dict()
+                    for k, v in self.__objects.items()
+                },
+                f
+            )
+
+

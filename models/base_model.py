@@ -13,7 +13,7 @@ class BaseModel(cmd.Cmd):
         for key, val in kwargs.items():
             date_format = "%Y-%m-%dT%H:%M:%S.%f"
             if key == "created_at" or key == "updated_at":
-                setatrr(self, key, datetime.strptime(val, date_format))
+                setattr(self, key, datetime.strptime(val, date_format))
             else:
                 setattr(self, key, val)
         if not kwargs:
@@ -22,16 +22,16 @@ class BaseModel(cmd.Cmd):
             self.updated_at = datetime.now()
             models.storage.new(self)
 
-    def __str__(self):
-        """overriding the __str__ method"""
-        return "[{}] ({}) {}".format(self.__class__.__name__,
-                                     self.id, self.__dict__)
-
     def save(self):
         """updates the public instance attribute updated_at with
         the current datetime"""
         self.updated_at = datetime.now()
         models.storage.save()
+
+    def __str__(self):
+        """overriding the __str__ method"""
+        return "[{}] ({}) {}".format(self.__class__.__name__,
+                                     self.id, self.__dict__)
 
     def to_dict(self):
         """returns a dictionary containing

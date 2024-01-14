@@ -32,18 +32,6 @@ class FileStorage:
             "{}.{}".format(obj.__class__.__name__, obj.id)
             ] = obj
 
-    def reload(self):
-        """
-        Loads the storage dictionary from a JSON file.
-        """
-        try:
-            with open(self.__file_path, "r") as f:
-                objdicts = json.load(f)
-                for val in objdicts.values():
-                    self.new(eval(val["__class__"])(**val))
-        except FileNotFoundError:
-            pass
-
     def save(self):
         """
         Saves the storage dictionary to a JSON file.
@@ -57,4 +45,14 @@ class FileStorage:
                 f
             )
 
-
+    def reload(self):
+        """
+        Loads the storage dictionary from a JSON file.
+        """
+        try:
+            with open(self.__file_path, "r") as f:
+                objdicts = json.load(f)
+                for val in objdicts.values():
+                    self.new(eval(val["__class__"])(**val))
+        except FileNotFoundError:
+            pass

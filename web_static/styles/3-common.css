@@ -3,7 +3,9 @@ body
     padding : 0;
     margin : 0;
     display: flex;
-    color :  #484848;
+    color : #484848;
+    font-size : 14px;
+    font-family : Circular,"Helvetica Neue",Helvetica,Arial,sans-serif;
     justify-content: space-between;
     flex-direction: column;
     height: 100vh;
